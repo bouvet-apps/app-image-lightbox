@@ -1,0 +1,43 @@
+{
+  "name": "lightbox-backend",
+  "version": "1.0.0",
+  "description": "Back-end resources for Image Lightbox",
+  "homepage": "http://www.bouvet.no",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bouvet-apps/app-image-lightbox"
+  },
+  "license": "Apache 2.0",
+  "author": "Bouvet",
+  "scripts": {
+    "watch": "babel --watch=src/main/resources --out-dir=build/resources/main --ignore \"**/*.js\"",
+    "build": "concurrently \"npm-run-all build:*\" \"cd src/frontend && npm run build\"",
+    "build:js": "babel src/main/resources --out-dir=build/resources/main --ignore \"**/*.js\"",
+    "build:test": "babel src/test/resources --out-dir=build/resources/test --ignore \"**/*.js\"",
+    "test": "babel src/test/resources --out-dir=build/resources/test --ignore \"**/*.js\" --ignore \"**/*.jsx\"",
+    "dev": "concurrently \"npm-run-all watch\" \"cd src/frontend && npm-run-all watch\"",
+    "lint": "eslint --ext=js --ext=es6 ./src/main/resources > ./build/lint-results/backend-lint-result && eslint --ext=js --ext=es6 --ext=vue ./src/frontend/scripts > ./build/lint-results/frontend-lint-result"
+  },
+  "dependencies": {
+    "mark.js": "8.11.1",
+    "core-js": "3.22.8"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.17.10",
+    "@babel/core": "7.18.2",
+    "@babel/eslint-parser": "7.18.2",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "7.17.12",
+    "@babel/plugin-proposal-object-rest-spread": "7.18.0",
+    "@babel/plugin-proposal-optional-chaining": "7.17.12",
+    "@babel/plugin-transform-arrow-functions": "7.17.12",
+    "@babel/preset-env": "7.18.2",
+    "@types/node": "17.0.41",
+    "concurrently": "7.2.1",
+    "eslint": "8.17.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-react": "7.30.0",
+    "npm-run-all": "4.1.5",
+    "react": "18.1.0"
+  }
+}

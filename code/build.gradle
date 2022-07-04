@@ -1,0 +1,183 @@
+plugins {
+    id 'java'
+    id 'com.enonic.xp.app' version '3.2.0'
+    id "com.github.node-gradle.node" version "3.3.0"
+    id 'org.ajoberstar.grgit' version '4.1.1'
+    id "com.github.ben-manes.versions" version '0.39.0'
+}
+
+sourceCompatibility = "1.11"
+targetCompatibility = "1.11"
+
+app {
+    name = project.ext.appName
+    displayName = project.ext.displayName
+    vendorName = project.ext.vendorName
+    vendorUrl = project.ext.vendorUrl
+    systemVersion = "${xpVersion}"
+    keepArchiveFileName = true
+
+    version = "${version}.${grgit.head().abbreviatedId}"
+
+    rawDevSourcePaths = ["/enonic-xp/devpath", "/enonic-xp/devpathbuild"]
+}
+
+ext {
+    deployDir = "../deploy/"
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'site'
+        }
+    }
+}
+
+task packageApplication {
+    dependsOn(':build')
+    group 'application'
+    description 'Packages entire application'
+    doLast {
+        copy {
+            from "build/libs/${projectName}-${version}.jar"
+            into "${deployDir}"
+            rename ("${projectName}-${version}.jar", "${projectName}.jar")
+        }
+    }
+}
+
+task frontend {
+    dependsOn(':frontend:build')
+    inputs.dir 'src/frontend/'
+    outputs.dir "$buildDir/resources/main"
+}
+
+task npmBuild(
+        type: NpmTask,
+        group: 'node',
+        dependsOn: ['installWithCI', 'npmLint'],
+        description: 'Build javascript'
+) {
+    inputs.dir 'src'
+    outputs.dir "$buildDir/resources"
+    args = ['run', 'build']
+}
+
+task npmDev(
+        type: NpmTask,
+        group: 'node',
+        dependsOn: 'installWithCI',
+        description: 'Build and watch backend and frontend resources'
+    ) {
+    args = ['run', 'dev']
+}
+
+task npmTest(
+        type: NpmTask,
+        group: 'node',
+        dependsOn: 'npmBuild',
+        description: 'Run javascript tests'
+    ) {
+    inputs.dir 'src'
+    outputs.dir "$buildDir/test-results"
+    args = ['run', 'test']
+}
+rootProject.tasks.getByName("test").dependsOn npmTest
+
+task npmLint(
+        type: NpmTask,
+        group: 'node',
+        dependsOn: ['installWithCI', 'frontend'],
+        description: 'Run lint'
+) {
+    inputs.dir 'src/main'
+    outputs.dir "$buildDir/lint-results"
+    args = ['run', 'lint']
+}
+
+task npmWatch(
+        type: NpmTask,
+        group: 'node',
+        dependsOn: 'npmBuild',
+        description: 'Run watch'
+) {
+    args = ['run', 'watch']
+}
+
+task installWithCI(
+        type: NpmTask,
+        group: 'node',
+        description: 'Install node dependencies with ci, ignoring scripts'
+) {
+    inputs.files "package.json"
+    outputs.dir "./node_modules"
+    args = ['ci', '--ignore-scripts', '--quiet']
+}
+
+task npm_install(
+        type: NpmTask,
+        group: 'node',
+        description: 'Install node dependencies, ignoring scripts'
+) {
+    args = ['install', '--ignore-scripts', '--quiet']
+}
+
+task appName {
+    group 'application'
+    description 'Get the name of the application from gradle.properties'
+    doLast {
+        print "${projectName}".replaceAll(/[^a-zA-Z]/, "");
+    }
+}
+
+task appVersion {
+    group 'application'
+    description 'Get the version of the application from gradle.properties'
+    doLast {
+        print "${version}"
+    }
+}
+
+task enonicVersion {
+    group 'application'
+    description 'Get the enonic XP version from gradle.properties'
+    doLast {
+        print "${xpVersion}"
+    }
+}
+
+dependencies {
+    implementation "com.enonic.xp:core-api:${xpVersion}"
+    implementation "com.enonic.xp:portal-api:${xpVersion}"
+    include "com.enonic.xp:lib-content:${xpVersion}"
+    include "com.enonic.xp:lib-context:${xpVersion}"
+    include "com.enonic.xp:lib-i18n:${xpVersion}"
+    include "com.enonic.xp:lib-portal:${xpVersion}"
+    include "com.enonic.xp:testing:${xpVersion}"
+    include "com.enonic.lib:lib-cache:2.1.0"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    xp.enonicRepo()
+    maven { url 'https://jitpack.io' } // Needed by freemarker
+}
+
+node {
+    // Version of node to use.
+    version = '16.15.1'
+
+    // Version of npm to use.
+    npmVersion = '8.11.0'
+
+    // If true, it will download node using above parameters.
+    // If false, it will try to use globally installed node.
+    download = true
+}
+
+wrapper {
+    gradleVersion = '7.3.1'
+    distributionType = Wrapper.DistributionType.BIN
+}

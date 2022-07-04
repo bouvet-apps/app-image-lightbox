@@ -1,0 +1,63 @@
+{
+  "name": "lightbox-frontend",
+  "version": "1.0.0",
+  "description": "Front-end resources for Image Lightbox.",
+  "homepage": "http://www.bouvet.no",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bouvet-apps/app-image-lightbox"
+  },
+  "license": "Apache 2.0",
+  "author": "Bouvet",
+  "scripts": {
+    "clean": "rimraf ../../build/resources/main/assets",
+    "lint": "eslint --resolve-plugins-relative-to ../../.eslintrc.json --ext=js --ext=es6 --ext=vue",
+    "build": "npm-run-all build:*",
+    "build:js": "webpack --config webpack.prod.config.js",
+    "dev:build": "webpack --config webpack.dev.config.js",
+    "watch": "webpack --config webpack.dev.config.js --watch"
+  },
+  "dependencies": {
+    "@babel/core": "7.18.2",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "7.17.12",
+    "@babel/plugin-proposal-optional-chaining": "7.17.12",
+    "@babel/plugin-transform-runtime": "7.18.2",
+    "@babel/preset-env": "7.18.2",
+    "@babel/runtime": "7.18.3",
+    "babel-loader": "8.2.5",
+    "es6-promise": "4.2.8"
+  },
+  "devDependencies": {
+    "autoprefixer": "10.4.7",
+    "copyfiles": "2.4.1",
+    "css-loader": "6.7.1",
+    "css-minimizer-webpack-plugin": "4.0.0",
+    "eslint": "8.17.0",
+    "file-loader": "6.2.0",
+    "image-minimizer-webpack-plugin": "3.2.3",
+    "image-webpack-loader": "8.1.0",
+    "imagemin-gifsicle": "7.0.0",
+    "imagemin-mozjpeg": "10.0.0",
+    "imagemin-pngquant": "9.0.2",
+    "imagemin-svgo": "10.0.1",
+    "img-loader": "4.0.0",
+    "mini-css-extract-plugin": "2.6.0",
+    "mkdirp": "1.0.4",
+    "npm-run-all": "4.1.5",
+    "postcss-loader": "7.0.0",
+    "resolve-url-loader": "5.0.0",
+    "rimraf": "3.0.2",
+    "sass": "1.52.3",
+    "sass-loader": "13.0.0",
+    "style-loader": "3.3.1",
+    "stylelint": "14.9.0",
+    "stylelint-config-standard": "26.0.0",
+    "stylelint-scss": "4.2.0",
+    "stylelint-webpack-plugin": "3.3.0",
+    "webpack": "5.73.0",
+    "webpack-cli": "4.9.2",
+    "webpack-merge": "5.8.0"
+  },
+  "readme": "See README.md",
+  "readmeFilename": "README.md"
+}

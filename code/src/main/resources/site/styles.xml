@@ -1,0 +1,5 @@
+<styles xmlns="urn:enonic:xp:model:1.0">
+  <image name="editor-image-lightbox">
+    <display-name i18n="style.displayname">Bildelysboks</display-name>
+  </image>
+</styles>

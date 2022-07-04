@@ -1,0 +1,66 @@
+plugins {
+    id 'com.github.node-gradle.node'
+}
+
+task installWithCI(type: NpmTask) {
+    inputs.files "package.json"
+    outputs.dir "./node_modules"
+    // install with the ci command
+    args = ['ci', '--ignore-scripts', '--quiet', '--target_arch=x64']
+}
+
+task npm_install(type: NpmTask) {
+    // install with more arguments
+    args = ['install', '--ignore-scripts', '--quiet', '--target_arch=x64']
+}
+
+task npm_rebuild_necessary(type: NpmTask) {
+    // rebuilds packages which needs to run pre or post scripts to work properly
+    // node-sass is a dependency we specified, but the others are dependencies of one of our dependencies
+    // these are: imagemin-pngquant, image-webpack-loader, imagemin-mozjpeg, imagemin-gifsicle, image-webpack-loader
+    args = ['rebuild', 'pngquant-bin', 'optipng-bin', 'mozjpeg', 'gifsicle', 'cwebp-bin']
+    inputs.files "package.json"
+    outputs.dir "./node_modules"
+}
+
+task build(type: NpmTask,
+        group: 'node',
+        dependsOn: 'npmLint',
+        description: 'Build frontend project'
+    ) {
+    args = ['run', 'build']
+    inputs.dir '.'
+    outputs.dir "../../build/resources/main"
+}
+
+task npmLint(
+        type: NpmTask,
+        group: 'node',
+        dependsOn: ['installWithCI', 'npm_rebuild_necessary'],
+        description: 'Run frontend lint'
+) {
+    inputs.dir '.'
+    outputs.dir "../../build/lint-results"
+    args = ['run', 'lint']
+}
+
+task clean(type: NpmTask,
+        group: 'node',
+        description: 'Clean frontend project'
+    ) {
+    args = ['run', 'clean']
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+node {
+    // Version of node to use.
+    version = '16.15.1'
+
+    // Version of npm to use.
+    npmVersion = '8.11.0'
+    download = true
+}

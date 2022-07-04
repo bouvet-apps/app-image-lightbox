@@ -1,0 +1,121 @@
+/* Style the Image Used to Trigger the Modal */
+.editor-image-lightbox {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  position: relative;
+
+  &::after {
+    content: "\02194";
+    transform: rotate(135deg);
+    font-size: 15px;
+    color: #f1f1f1;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: #000; /* Black */
+    background-color: rgba(0, 0, 0, 90%); /* Black w/ opacity */ /* stylelint-disable-line color-function-notation */
+    border-radius: 50%;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:hover,
+  &:focus-within, /* needed as the focus is on the img tag inside the figure with class name "editor-image-lightbox" */
+  &:focus {
+    opacity: 0.7;
+
+    &::before {
+      transform-origin: center;
+      transform: scale(1.2) rotate(135deg);
+    }
+  }
+}
+
+/* The Modal (background) */
+#lightbox-modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 9999; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: #000; /* Black */
+  background-color: rgba(0, 0, 0, 90%); /* Black w/ opacity */ /* stylelint-disable-line color-function-notation */
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+/* Modal Content (Image) */
+#lightbox-img {
+  margin: auto;
+  display: block;
+  width: 80%;
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+#lightbox-caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation - Zoom in the Modal */
+#lightbox-img,
+#lightbox-caption {
+  animation-name: lightbox-zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes lightbox-zoom {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+/* The Close Button */
+#close-lightbox-modal {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+  background: none;
+  border: none;
+  width: 4rem;
+  height: 4rem;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: #bbb;
+    text-decoration: none;
+    transform: rotate(90deg);
+    transform-origin: center;
+  }
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px) {
+  #lightbox-img,
+  #lightbox-caption {
+    width: 100%;
+  }
+}
