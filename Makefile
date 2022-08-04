@@ -1,9 +1,9 @@
 .PHONY: default help prepare configure build lint test package watch deploy clean start stop
 
-SRC_DIR := $(shell pwd)
-STAMPS_DIR := $(SRC_DIR)/.stamps
+# SRC_DIR := $(shell pwd)
+STAMPS_DIR := .stamps
 
-CODE_DIR := $(SRC_DIR)/code
+CODE_DIR := code
 FRONTEND_DIR := $(CODE_DIR)/src/frontend
 APPLICATION_DIR := $(CODE_DIR)/src/main
 
@@ -14,8 +14,8 @@ GIT_SHA := $(shell git rev-parse --short=7 HEAD)
 SANDBOX_DIR := ~/.enonic/sandboxes/$(APP_NAME) # Replace with another sandbox if you like
 SANDBOX_VERSION := $(shell cd $(CODE_DIR) && ./gradlew enonicVersion -q)
 
-GIT_HOOKS := $(SRC_DIR)/.git/hooks
-GIT_HOOKS_DIR := $(SRC_DIR)/scripts/hooks
+GIT_HOOKS := .git/hooks
+GIT_HOOKS_DIR := scripts/hooks
 GIT_HOOKS_SOURCES := $(shell find $(GIT_HOOKS_DIR))
 
 DIST_DIR := $(CODE_DIR)/build/libs
