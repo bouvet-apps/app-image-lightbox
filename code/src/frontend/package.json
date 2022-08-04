@@ -10,7 +10,7 @@
   "license": "Apache 2.0",
   "author": "Bouvet",
   "scripts": {
-    "clean": "rimraf ../../build/resources/main/assets",
+    "clean": "rm -rf ../../build/resources/main/assets",
     "lint": "eslint --resolve-plugins-relative-to ../../.eslintrc.json --ext=js --ext=es6 --ext=vue",
     "build": "npm-run-all build:*",
     "build:js": "webpack --config webpack.prod.config.js",
