@@ -106,7 +106,6 @@ module.exports = {
                 options: {
                   plugins: [
                     "imagemin-gifsicle",
-                    "imagemin-mozjpeg",
                     "imagemin-pngquant",
                     "imagemin-svgo"
                   ]

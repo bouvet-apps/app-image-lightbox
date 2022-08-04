@@ -17,8 +17,8 @@ task npm_install(type: NpmTask) {
 task npm_rebuild_necessary(type: NpmTask) {
     // rebuilds packages which needs to run pre or post scripts to work properly
     // node-sass is a dependency we specified, but the others are dependencies of one of our dependencies
-    // these are: imagemin-pngquant, image-webpack-loader, imagemin-mozjpeg, imagemin-gifsicle, image-webpack-loader
-    args = ['rebuild', 'pngquant-bin', 'optipng-bin', 'mozjpeg', 'gifsicle', 'cwebp-bin']
+    // these are: imagemin-pngquant, image-webpack-loader, imagemin-gifsicle, image-webpack-loader
+    args = ['rebuild', 'pngquant-bin', 'optipng-bin', 'gifsicle', 'cwebp-bin']
     inputs.files "package.json"
     outputs.dir "./node_modules"
 }
