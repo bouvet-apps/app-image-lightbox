@@ -13,7 +13,9 @@ targetCompatibility = "1.11"
 publishing {
     publications {
         maven(MavenPublication) {
-            version = '${version}'
+            groupId = "${group}"
+            artifactId = "${projectName}"
+            version = "${version}"
 
             from components.java
         }
