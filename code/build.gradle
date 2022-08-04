@@ -10,6 +10,16 @@ plugins {
 sourceCompatibility = "1.11"
 targetCompatibility = "1.11"
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            version = '${version}'
+
+            from components.java
+        }
+    }
+}
+
 app {
     name = project.ext.appName
     displayName = project.ext.displayName
