@@ -30,8 +30,6 @@ app {
     systemVersion = "${xpVersion}"
     keepArchiveFileName = true
 
-    version = "${version}.${grgit.head().abbreviatedId}"
-
     rawDevSourcePaths = ["/enonic-xp/devpath", "/enonic-xp/devpathbuild"]
 }
 
