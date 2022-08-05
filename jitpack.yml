@@ -2,5 +2,4 @@ before_install:
    - sdk install java 11.0.10-open
    - sdk use java 11.0.10-open
 install:
-  - make package
-  - cd code && ./gradlew publishToMavenLocal
+  - cd code && ./gradlew npmBuild npmLint test packageApplication publishToMavenLocal
