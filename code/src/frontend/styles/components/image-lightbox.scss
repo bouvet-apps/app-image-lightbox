@@ -60,7 +60,7 @@
 #lightbox-img {
   margin: auto;
   display: block;
-  width: 80%;
+  max-width: 80%;
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
@@ -114,7 +114,10 @@
 
 /* 100% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px) {
-  #lightbox-img,
+  #lightbox-img {
+    max-width: 100%;
+  }
+
   #lightbox-caption {
     width: 100%;
   }
