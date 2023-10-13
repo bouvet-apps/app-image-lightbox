@@ -1,10 +1,10 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'com.enonic.xp.app' version '3.2.0'
-    id "com.github.node-gradle.node" version "3.3.0"
+    id 'com.enonic.xp.app' version '3.4.0'
+    id "com.github.node-gradle.node" version "7.0.0"
     id 'org.ajoberstar.grgit' version '4.1.1'
-    id "com.github.ben-manes.versions" version '0.39.0'
+    id "com.github.ben-manes.versions" version '0.47.0'
 }
 
 sourceCompatibility = "1.11"
@@ -45,18 +45,9 @@ sourceSets {
     }
 }
 
-task packageApplication {
-    dependsOn(':build')
-    group 'application'
-    description 'Packages entire application'
-    doLast {
-        copy {
-            from "build/libs/${projectName}-${version}.jar"
-            into "${deployDir}"
-            rename ("${projectName}-${version}.jar", "${projectName}.jar")
-        }
-    }
-}
+// ##
+// ## Application tasks
+// ##
 
 task frontend {
     dependsOn(':frontend:build')
@@ -64,21 +55,32 @@ task frontend {
     outputs.dir "$buildDir/resources/main"
 }
 
+task packageApplication {
+    dependsOn(':build')
+    group 'application'
+    description 'Packages entire application'
+}
+
+
+// ##
+// ## npm tasks
+// ##
 task npmBuild(
         type: NpmTask,
         group: 'node',
-        dependsOn: ['installWithCI', 'npmLint'],
+        //dependsOn: ['installWithCI', 'npmLint'],
         description: 'Build javascript'
 ) {
-    inputs.dir 'src'
-    outputs.dir "$buildDir/resources"
     args = ['run', 'build']
+
+    inputs.dir 'src/main/resources'
+    outputs.dir "$buildDir/resources/main"
 }
 
 task npmDev(
         type: NpmTask,
         group: 'node',
-        dependsOn: 'installWithCI',
+       // dependsOn: 'installWithCI',
         description: 'Build and watch backend and frontend resources'
     ) {
     args = ['run', 'dev']
@@ -87,7 +89,7 @@ task npmDev(
 task npmTest(
         type: NpmTask,
         group: 'node',
-        dependsOn: 'npmBuild',
+        //dependsOn: 'npmBuild',
         description: 'Run javascript tests'
     ) {
     inputs.dir 'src'
@@ -99,7 +101,7 @@ rootProject.tasks.getByName("test").dependsOn npmTest
 task npmLint(
         type: NpmTask,
         group: 'node',
-        dependsOn: ['installWithCI', 'frontend'],
+        //dependsOn: ['installWithCI', 'frontend'],
         description: 'Run lint'
 ) {
     inputs.dir 'src/main'
@@ -116,23 +118,23 @@ task npmWatch(
     args = ['run', 'watch']
 }
 
-task installWithCI(
-        type: NpmTask,
-        group: 'node',
-        description: 'Install node dependencies with ci, ignoring scripts'
-) {
-    inputs.files "package.json"
-    outputs.dir "./node_modules"
-    args = ['ci', '--ignore-scripts', '--quiet']
-}
+// task installWithCI(
+//         type: NpmTask,
+//         group: 'node',
+//         description: 'Install node dependencies with ci, ignoring scripts'
+// ) {
+//     inputs.files "package.json"
+//     outputs.dir "./node_modules"
+//     args = ['ci', '--ignore-scripts', '--quiet']
+// }
 
-task npm_install(
-        type: NpmTask,
-        group: 'node',
-        description: 'Install node dependencies, ignoring scripts'
-) {
-    args = ['install', '--ignore-scripts', '--quiet']
-}
+// task npm_install(
+//         type: NpmTask,
+//         group: 'node',
+//         description: 'Install node dependencies, ignoring scripts'
+// ) {
+//     args = ['install', '--ignore-scripts', '--quiet']
+// }
 
 task appName {
     group 'application'
@@ -166,7 +168,7 @@ dependencies {
     include "com.enonic.xp:lib-i18n:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
     include "com.enonic.xp:testing:${xpVersion}"
-    include "com.enonic.lib:lib-cache:2.1.0"
+    include "com.enonic.lib:lib-cache:2.2.0"
 }
 
 repositories {
@@ -189,6 +191,6 @@ node {
 }
 
 wrapper {
-    gradleVersion = '7.3.1'
+    gradleVersion = '8.3'
     distributionType = Wrapper.DistributionType.BIN
 }
