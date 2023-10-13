@@ -1,12 +1,10 @@
 const path = require("path");
+const fs = require("fs"); // Get appName from gradle.properties
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const StylelintPlugin = require("stylelint-webpack-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 
 const resourceFolder = "../../build/resources/main/assets/";
-
-// Get appName from gradle.properties
-const fs = require("fs");
 
 let appName = "defaultAppName";
 const lines = fs.readFileSync("../../gradle.properties", "utf-8").split("\n");
