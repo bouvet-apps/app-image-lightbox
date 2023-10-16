@@ -3,7 +3,6 @@
   "plugins": [
     "stylelint-scss"
   ],
-  "customSyntax": "",
   "rules": {
     "at-rule-no-unknown": null,
     "no-descending-specificity": null,

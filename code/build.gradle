@@ -48,6 +48,13 @@ sourceSets {
 // ##
 // ## Application tasks
 // ##
+tasks.named("compileTestJava") {
+    dependsOn(":npmBuild")
+}
+
+tasks.named("jar") {
+    dependsOn(":npmBuild")
+}
 
 task frontend {
     dependsOn(':frontend:build')
@@ -68,7 +75,7 @@ task packageApplication {
 task npmBuild(
         type: NpmTask,
         group: 'node',
-        //dependsOn: ['installWithCI', 'npmLint'],
+        dependsOn: ['installWithCI', 'npmLint'],
         description: 'Build javascript'
 ) {
     args = ['run', 'build']
@@ -80,7 +87,7 @@ task npmBuild(
 task npmDev(
         type: NpmTask,
         group: 'node',
-       // dependsOn: 'installWithCI',
+       dependsOn: 'installWithCI',
         description: 'Build and watch backend and frontend resources'
     ) {
     args = ['run', 'dev']
@@ -89,7 +96,7 @@ task npmDev(
 task npmTest(
         type: NpmTask,
         group: 'node',
-        //dependsOn: 'npmBuild',
+        dependsOn: 'npmBuild',
         description: 'Run javascript tests'
     ) {
     inputs.dir 'src'
@@ -101,7 +108,7 @@ rootProject.tasks.getByName("test").dependsOn npmTest
 task npmLint(
         type: NpmTask,
         group: 'node',
-        //dependsOn: ['installWithCI', 'frontend'],
+        dependsOn: ['installWithCI', 'frontend'],
         description: 'Run lint'
 ) {
     inputs.dir 'src/main'
@@ -118,23 +125,23 @@ task npmWatch(
     args = ['run', 'watch']
 }
 
-// task installWithCI(
-//         type: NpmTask,
-//         group: 'node',
-//         description: 'Install node dependencies with ci, ignoring scripts'
-// ) {
-//     inputs.files "package.json"
-//     outputs.dir "./node_modules"
-//     args = ['ci', '--ignore-scripts', '--quiet']
-// }
+task installWithCI(
+        type: NpmTask,
+        group: 'node',
+        description: 'Install node dependencies with ci, ignoring scripts'
+) {
+    inputs.files "package.json"
+    outputs.dir "./node_modules"
+    args = ['ci', '--ignore-scripts', '--quiet']
+}
 
-// task npm_install(
-//         type: NpmTask,
-//         group: 'node',
-//         description: 'Install node dependencies, ignoring scripts'
-// ) {
-//     args = ['install', '--ignore-scripts', '--quiet']
-// }
+task npm_install(
+        type: NpmTask,
+        group: 'node',
+        description: 'Install node dependencies, ignoring scripts'
+) {
+    args = ['install', '--ignore-scripts', '--quiet']
+}
 
 task appName {
     group 'application'
