@@ -87,7 +87,7 @@ task npmBuild(
 task npmDev(
         type: NpmTask,
         group: 'node',
-       dependsOn: 'installWithCI',
+        dependsOn: 'installWithCI',
         description: 'Build and watch backend and frontend resources'
     ) {
     args = ['run', 'dev']
