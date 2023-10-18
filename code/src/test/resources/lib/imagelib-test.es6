@@ -1,4 +1,4 @@
-import { mock, assertJson, assertEquals } from "/lib/xp/testing";
+const { mock, assertJson, assertEquals } = require("/lib/xp/testing");
 
 const image1024x768 = {
   _id: "c5195da3-d087-4fdd-b1f0-0f8356d9b116",

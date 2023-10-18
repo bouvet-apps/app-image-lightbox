@@ -3,6 +3,13 @@
         "airbnb-base"
     ],
     "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "requireConfigFile": false,
+        "sourceType": "module",
+        "babelOptions": {
+          "babelrc": true
+        }
+    },
     "rules": {
         "import/extensions": [
             "error",
