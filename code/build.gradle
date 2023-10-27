@@ -53,7 +53,7 @@ tasks.named("compileTestJava") {
 }
 
 tasks.named("jar") {
-    dependsOn(":npmBuild")
+    dependsOn(":test")
 }
 
 task frontend {

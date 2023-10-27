@@ -131,7 +131,7 @@ mock("/lib/xp/content.js", mockedContentLibFuncs);
 mock("/lib/xp/context.js", mockedContextLibFuncs);
 mock("/lib/xp/portal.js", mockedPortalLibFuncs);
 
-const imageLib = require("/lib/image"); // Lib must be required AFTER any mocks are defined
+const imageLib = require("/lib/image.js"); // Lib must be required AFTER any mocks are defined
 
 exports.testGetScaleTypes = () => {
   const result = imageLib.getScaleTypes();
