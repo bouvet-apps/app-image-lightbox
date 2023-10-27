@@ -1,4 +1,4 @@
 jdk:
   - openjdk11
 install:
-  - cd code && ./gradlew npmBuild npmLint test packageApplication publishToMavenLocal
+  - cd code && ./gradlew npmBuild npmLint test packageApplication publishToMavenLocal --debug
