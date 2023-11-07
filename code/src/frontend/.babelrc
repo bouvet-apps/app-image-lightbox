@@ -4,14 +4,15 @@
             "@babel/preset-env",
             {
                 "useBuiltIns": "usage",
-                "corejs": "3.22.8"
+                "corejs": "3.33.0"
             }
         ]
     ],
     "plugins": [
         "@babel/plugin-transform-runtime",
-        "@babel/plugin-proposal-nullish-coalescing-operator",
-        "@babel/plugin-proposal-optional-chaining"
+        "@babel/plugin-transform-nullish-coalescing-operator",
+        "@babel/plugin-transform-optional-chaining"
+            
     ],
     "comments": false
 }

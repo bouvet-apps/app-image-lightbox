@@ -1,10 +1,10 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'com.enonic.xp.app' version '3.2.0'
-    id "com.github.node-gradle.node" version "3.3.0"
+    id 'com.enonic.xp.app' version '3.4.0'
+    id "com.github.node-gradle.node" version "7.0.0"
     id 'org.ajoberstar.grgit' version '4.1.1'
-    id "com.github.ben-manes.versions" version '0.39.0'
+    id "com.github.ben-manes.versions" version '0.47.0'
 }
 
 sourceCompatibility = "1.11"
@@ -45,17 +45,15 @@ sourceSets {
     }
 }
 
-task packageApplication {
-    dependsOn(':build')
-    group 'application'
-    description 'Packages entire application'
-    doLast {
-        copy {
-            from "build/libs/${projectName}-${version}.jar"
-            into "${deployDir}"
-            rename ("${projectName}-${version}.jar", "${projectName}.jar")
-        }
-    }
+// ##
+// ## Application tasks
+// ##
+tasks.named("compileTestJava") {
+    dependsOn(":npmBuild")
+}
+
+tasks.named("jar") {
+    dependsOn(":npmBuild")
 }
 
 task frontend {
@@ -64,15 +62,26 @@ task frontend {
     outputs.dir "$buildDir/resources/main"
 }
 
+task packageApplication {
+    dependsOn(':build')
+    group 'application'
+    description 'Packages entire application'
+}
+
+
+// ##
+// ## npm tasks
+// ##
 task npmBuild(
         type: NpmTask,
         group: 'node',
         dependsOn: ['installWithCI', 'npmLint'],
         description: 'Build javascript'
 ) {
-    inputs.dir 'src'
-    outputs.dir "$buildDir/resources"
     args = ['run', 'build']
+
+    inputs.dir 'src/main/resources'
+    outputs.dir "$buildDir/resources/main"
 }
 
 task npmDev(
@@ -166,7 +175,7 @@ dependencies {
     include "com.enonic.xp:lib-i18n:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
     include "com.enonic.xp:testing:${xpVersion}"
-    include "com.enonic.lib:lib-cache:2.1.0"
+    include "com.enonic.lib:lib-cache:2.2.0"
 }
 
 repositories {
@@ -189,6 +198,6 @@ node {
 }
 
 wrapper {
-    gradleVersion = '7.3.1'
+    gradleVersion = '8.3'
     distributionType = Wrapper.DistributionType.BIN
 }

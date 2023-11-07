@@ -6,6 +6,8 @@
   "rules": {
     "at-rule-no-unknown": null,
     "no-descending-specificity": null,
-    "length-zero-no-unit": null
+    "length-zero-no-unit": null,
+    "media-feature-range-notation": "prefix"
   }
+  
 }
