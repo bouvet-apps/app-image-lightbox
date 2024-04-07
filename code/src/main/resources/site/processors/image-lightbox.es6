@@ -16,7 +16,7 @@ exports.responseProcessor = function (req, res) {
   }
 
   // Define our regular expressions
-  const figuresRegex = /<figure(.)*?(.)*?(<\/figure>)/mgs;
+  const figuresRegex = /<figure\s+[^>]*class="[^"]*editor-image-lightbox[^"]*"[^>]*>[\s\S]*?<\/figure>/g;
   const imageLightboxRegex = /editor-image-lightbox/;
   const imageUrlRegex = /(src=")(.*?)(")/;
   const imageIdRegex = /(\/_\/image\/)(.*?)(:)/;
