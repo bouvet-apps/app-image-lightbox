@@ -17,7 +17,6 @@ exports.responseProcessor = function (req, res) {
 
   // Define our regular expressions
   const figuresRegex = /<figure\s+[^>]*class="[^"]*editor-image-lightbox[^"]*"[^>]*>[\s\S]*?<\/figure>/g;
-  const imageLightboxRegex = /editor-image-lightbox/;
   const imageUrlRegex = /(src=")(.*?)(")/;
   const imageIdRegex = /(\/_\/image\/)(.*?)(:)/;
 
@@ -32,7 +31,6 @@ exports.responseProcessor = function (req, res) {
     */
     // Generate high-res images for the modal to use
     const lightboxFigures = figures
-      .filter((figure) => (imageLightboxRegex.test(figure)))
       .map((figure) => ({
         figure: figure,
         url: figure.match(imageUrlRegex)[2],
