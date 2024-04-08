@@ -3,13 +3,20 @@ const imageLib = require("/lib/image");
 const i18nLib = require("/lib/xp/i18n");
 
 exports.responseProcessor = function (req, res) {
-  if (req.mode !== "live" && req.mode !== "preview" && res.contentType === "text/html") {
+  if (req.mode !== "live" && req.mode !== "preview") {
     return res; // We don't need image lightbox in Edit mode
   }
 
+  if (res.contentType !== "text/html") {
+    return res; // We only use image lightbox on text/html
+  }
+
+  if (res.status !== 200) {
+    return res; // We don't want to use image lightbox on redirects
+  }
+
   // Define our regular expressions
-  const figuresRegex = /<figure(.)*?(.)*?(<\/figure>)/mgs;
-  const imageLightboxRegex = /editor-image-lightbox/;
+  const figuresRegex = /<figure\s+[^>]*class="[^"]*editor-image-lightbox[^"]*"[^>]*>[\s\S]*?<\/figure>/g;
   const imageUrlRegex = /(src=")(.*?)(")/;
   const imageIdRegex = /(\/_\/image\/)(.*?)(:)/;
 
@@ -24,7 +31,6 @@ exports.responseProcessor = function (req, res) {
     */
     // Generate high-res images for the modal to use
     const lightboxFigures = figures
-      .filter((figure) => (imageLightboxRegex.test(figure)))
       .map((figure) => ({
         figure: figure,
         url: figure.match(imageUrlRegex)[2],
