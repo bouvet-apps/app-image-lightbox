@@ -11,6 +11,7 @@
         }
     },
     "rules": {
+        "no-else-return": "off",
         "import/extensions": [
             "error",
             "ignorePackages",

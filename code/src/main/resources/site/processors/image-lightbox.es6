@@ -7,20 +7,18 @@ exports.responseProcessor = function (req, res) {
     return res; // We don't need image lightbox in Edit mode
   }
 
-  // Exclude non-HTML content types
-  if (res.contentType === "application/pdf"
-    || res.contentType === "application/json"
-    || res.contentType === "text/plain"
-    || res.contentType === "application/xml"
-    || res.contentType === "text/xml"
-    || res.contentType === "application/javascript"
-    || res.contentType === "application/x-javascript"
-    || res.contentType === "text/javascript"
-    || res.contentType === "application/zip"
-    || res.contentType === "application/msword"
-    || res.contentType === "application/vnd.ms-excel"
-    || res.contentType === "application/octet-stream") {
-    return res;
+  // Determine the content type
+  const giveMeRes = (contentType) => {
+    if (/.*text\/html.*/.test(contentType)) {
+      return "text/html type found";
+    } else {
+      return "Non-text/html type";
+    }
+  };
+
+  // Check the content type
+  if (giveMeRes(res.contentType) === "Non-text/html type") {
+    return res; // Only process text/html content types
   }
 
   if (res.status !== 200) {
