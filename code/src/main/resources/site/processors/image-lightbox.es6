@@ -3,7 +3,7 @@ const imageLib = require("/lib/image");
 const i18nLib = require("/lib/xp/i18n");
 
 exports.responseProcessor = function (req, res) {
-  if (req.mode !== "live" && req.mode !== "preview" && res.contentType === "text/html") {
+  if (req.mode !== "live" && req.mode !== "preview") {
     return res; // We don't need image lightbox in Edit mode
   }
 
