@@ -7,6 +7,26 @@ exports.responseProcessor = function (req, res) {
     return res; // We don't need image lightbox in Edit mode
   }
 
+  // Exclude non-HTML content types
+  if (res.contentType === "application/pdf"
+    || res.contentType === "application/json"
+    || res.contentType === "text/plain"
+    || res.contentType === "application/xml"
+    || res.contentType === "text/xml"
+    || res.contentType === "application/javascript"
+    || res.contentType === "application/x-javascript"
+    || res.contentType === "text/javascript"
+    || res.contentType === "application/zip"
+    || res.contentType === "application/msword"
+    || res.contentType === "application/vnd.ms-excel"
+    || res.contentType === "application/octet-stream") {
+    return res;
+  }
+
+  if (res.status !== 200) {
+    return res; // We don't want to use image lightbox on redirects
+  }
+
   // Define our regular expressions
   const figuresRegex = /<figure\s+[^>]*class="[^"]*editor-image-lightbox[^"]*"[^>]*>[\s\S]*?<\/figure>/g;
   const imageUrlRegex = /(src=")(.*?)(")/;
