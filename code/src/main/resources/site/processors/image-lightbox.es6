@@ -7,18 +7,9 @@ exports.responseProcessor = function (req, res) {
     return res; // We don't need image lightbox in Edit mode
   }
 
-  // Determine the content type
-  const giveMeRes = (contentType) => {
-    if (/.*text\/html.*/.test(contentType)) {
-      return "text/html type found";
-    } else {
-      return "Non-text/html type";
-    }
-  };
-
   // Check the content type
-  if (giveMeRes(res.contentType) === "Non-text/html type") {
-    return res; // Only process text/html content types
+  if (!/.*text\/html.*/.test(res.contentType)) {
+    return res;
   }
 
   if (res.status !== 200) {
