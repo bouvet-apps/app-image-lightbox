@@ -7,8 +7,9 @@ exports.responseProcessor = function (req, res) {
     return res; // We don't need image lightbox in Edit mode
   }
 
-  if (res.contentType !== "text/html") {
-    return res; // We only use image lightbox on text/html
+  // Check the content type
+  if (!/.*text\/html.*/.test(res.contentType)) {
+    return res;
   }
 
   if (res.status !== 200) {
