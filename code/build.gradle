@@ -174,7 +174,7 @@ dependencies {
     include "com.enonic.xp:lib-context:${xpVersion}"
     include "com.enonic.xp:lib-i18n:${xpVersion}"
     include "com.enonic.xp:lib-portal:${xpVersion}"
-    include "com.enonic.xp:testing:${xpVersion}"
+    testImplementation "com.enonic.xp:testing:${xpVersion}"
     include "com.enonic.lib:lib-cache:2.2.0"
 }
 
