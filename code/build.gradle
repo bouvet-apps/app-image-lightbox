@@ -2,9 +2,9 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'com.enonic.xp.app' version '3.4.0'
-    id "com.github.node-gradle.node" version "7.0.0"
+    id "com.github.node-gradle.node" version "7.0.2"
     id 'org.ajoberstar.grgit' version '4.1.1'
-    id "com.github.ben-manes.versions" version '0.47.0'
+    id "com.github.ben-manes.versions" version '0.51.0'
 }
 
 sourceCompatibility = "1.11"
@@ -187,7 +187,7 @@ repositories {
 
 node {
     // Version of node to use.
-    version = '16.15.1'
+    version = '20.12.2'
 
     // Version of npm to use.
     npmVersion = '8.11.0'
@@ -198,6 +198,6 @@ node {
 }
 
 wrapper {
-    gradleVersion = '8.3'
+    gradleVersion = '8.9'
     distributionType = Wrapper.DistributionType.BIN
 }
