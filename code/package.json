@@ -1,7 +1,7 @@
 {
   "name": "lightbox-backend",
   "version": "1.0.0",
-  "description": "Back-end resources for Image Lightbox",
+  "description": "Back-end resource packages for Image Lightbox",
   "homepage": "http://www.bouvet.no",
   "repository": {
     "type": "git",
@@ -23,17 +23,17 @@
     "mark.js": "8.11.1"
   },
   "devDependencies": {
-    "@babel/cli": "7.23.0",
-    "@babel/core": "7.23.2",
-    "@babel/eslint-parser": "7.22.15",
-    "@babel/plugin-transform-nullish-coalescing-operator": "7.22.11",
-    "@babel/plugin-transform-optional-chaining": "7.23.0",
-    "@babel/preset-env": "7.23.2",
-    "@types/node": "20.8.5",
-    "concurrently": "8.2.1",
-    "eslint": "8.51.0",
+    "@babel/cli": "7.25.7",
+    "@babel/core": "7.25.8",
+    "@babel/eslint-parser": "7.25.8",
+    "@babel/plugin-transform-nullish-coalescing-operator": "7.25.8",
+    "@babel/plugin-transform-optional-chaining": "7.25.8",
+    "@babel/preset-env": "7.25.8",
+    "@types/node": "22.7.5",
+    "concurrently": "9.0.1",
+    "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.28.1",
+    "eslint-plugin-import": "2.31.0",
     "npm-run-all": "4.1.5"
   }
 }
