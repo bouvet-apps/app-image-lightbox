@@ -2,7 +2,6 @@ const path = require("path");
 const fs = require("fs"); // Get appName from gradle.properties
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const StylelintPlugin = require("stylelint-webpack-plugin");
-const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 
 const resourceFolder = "../../build/resources/main/assets/";
 
@@ -94,21 +93,6 @@ module.exports = {
             options: {
               name: "images/[name].[ext]",
               publicPath: "../"
-            }
-          },
-          {
-            loader: ImageMinimizerPlugin.loader,
-            options: {
-              minimizer: {
-                implementation: ImageMinimizerPlugin.imageminMinify,
-                options: {
-                  plugins: [
-                    "imagemin-gifsicle",
-                    "imagemin-pngquant",
-                    "imagemin-svgo"
-                  ]
-                }
-              }
             }
           }
         ]
