@@ -11,15 +11,17 @@
   "author": "Bouvet",
   "scripts": {
     "watch": "babel --watch=src/main/resources --out-dir=build/resources/main --ignore \"**/*.js\"",
-    "build": "concurrently \"npm-run-all build:*\" \"cd src/frontend && npm run build\"",
+    "build": "npm run build:js && npm run build:front && npm run build:test",
     "build:js": "babel src/main/resources --out-dir=build/resources/main --ignore \"**/*.js\"",
+    "build:front": "cd src/frontend && npm run build",
     "build:test": "babel src/test/resources --out-dir=build/resources/test --ignore \"**/*.js\"",
     "test": "babel src/test/resources --out-dir=build/resources/test --ignore \"**/*.js\" --ignore \"**/*.jsx\"",
-    "dev": "concurrently \"npm-run-all watch\" \"cd src/frontend && npm-run-all watch\"",
+    "dev": "npm run watch & npm run dev:front & wait",
+    "dev:front": "cd src/frontend && npm run watch",
     "lint": "eslint --ext=js --ext=es6 ./src/main/resources > ./build/lint-results/backend-lint-result && eslint --ext=js --ext=es6 --ext=vue ./src/frontend/scripts > ./build/lint-results/frontend-lint-result"
   },
   "dependencies": {
-    "core-js": "3.48.0",
+    "core-js": "3.49.0",
     "mark.js": "8.11.1"
   },
   "devDependencies": {
@@ -28,12 +30,10 @@
     "@babel/eslint-parser": "7.28.6",
     "@babel/plugin-transform-nullish-coalescing-operator": "7.28.6",
     "@babel/plugin-transform-optional-chaining": "7.28.6",
-    "@babel/preset-env": "7.29.0",
-    "@types/node": "25.2.0",
-    "concurrently": "9.2.1",
-    "eslint": "8.51.0",
+    "@babel/preset-env": "7.29.2",
+    "@types/node": "25.5.0",
+    "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.32.0",
-    "npm-run-all": "4.1.5"
+    "eslint-plugin-import": "2.32.0"
   }
 }
