@@ -16,6 +16,11 @@ exports.responseProcessor = function (req, res) {
     return res; // We don't want to use image lightbox on redirects
   }
 
+  // Ensure res.body.match exists and is a function
+  if (typeof res.body?.match !== "function") {
+    return res;
+  }
+
   // Define our regular expressions
   const figuresRegex = /<figure\s+[^>]*class="[^"]*editor-image-lightbox[^"]*"[^>]*>[\s\S]*?<\/figure>/g;
   const imageUrlRegex = /(src=")(.*?)(")/;
