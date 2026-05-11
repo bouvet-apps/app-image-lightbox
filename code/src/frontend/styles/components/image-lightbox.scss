@@ -15,8 +15,7 @@
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    background-color: #000; /* Black */
-    background-color: rgba(0, 0, 0, 90%); /* Black w/ opacity */ /* stylelint-disable-line color-function-notation */
+    background-color: #000000e6; /* Black w/ opacity */
     border-radius: 50%;
     transition: 0.3s;
     display: flex;
@@ -41,15 +40,14 @@
 #lightbox-modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 9999; /* Sit on top */
+  z-index: 2147483647; /* Set to max value as lightbox should always sit on top */
   padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: #000; /* Black */
-  background-color: rgba(0, 0, 0, 90%); /* Black w/ opacity */ /* stylelint-disable-line color-function-notation */
+  background-color: #000000e6; /* Black w/ opacity */
 
   &:hover {
     cursor: pointer;

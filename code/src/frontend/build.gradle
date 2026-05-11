@@ -14,15 +14,6 @@ task npm_install(type: NpmTask) {
     args = ['install', '--ignore-scripts', '--quiet', '--target_arch=x64']
 }
 
-task npm_rebuild_necessary(type: NpmTask) {
-    // rebuilds packages which needs to run pre or post scripts to work properly
-    // node-sass is a dependency we specified, but the others are dependencies of one of our dependencies
-    // these are: imagemin-pngquant, image-webpack-loader, imagemin-gifsicle, image-webpack-loader
-    args = ['rebuild', 'pngquant-bin', 'optipng-bin', 'gifsicle', 'cwebp-bin']
-    inputs.files "package.json"
-    outputs.dir "./node_modules"
-}
-
 task build(type: NpmTask,
         group: 'node',
         dependsOn: 'npmLint',
@@ -36,7 +27,7 @@ task build(type: NpmTask,
 task npmLint(
         type: NpmTask,
         group: 'node',
-        dependsOn: ['installWithCI', 'npm_rebuild_necessary'],
+    dependsOn: 'installWithCI',
         description: 'Run frontend lint'
 ) {
     inputs.dir '.'
@@ -57,10 +48,7 @@ repositories {
 }
 
 node {
-    // Version of node to use.
-    version = '16.15.1'
-
-    // Version of npm to use.
-    npmVersion = '8.11.0'
+    version = '16.20.2'
+    npmVersion = '8.19.4'
     download = true
 }
