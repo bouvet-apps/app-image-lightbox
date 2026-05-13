@@ -4,10 +4,11 @@
   cursor: pointer;
   transition: 0.3s;
   position: relative;
+  -webkit-tap-highlight-color: transparent;
 
   &::after {
-    content: "\02194";
-    transform: rotate(135deg);
+    transform: rotate(180deg);
+    content: "\274F";
     font-size: 15px;
     color: #f1f1f1;
     width: 20px;
@@ -28,26 +29,33 @@
   &:focus-within, /* needed as the focus is on the img tag inside the figure with class name "editor-image-lightbox" */
   &:focus {
     opacity: 0.7;
-
-    &::after {
-      transform-origin: center;
-      transform: scale(1.2) rotate(135deg);
-    }
   }
+}
+
+body.lightbox-open {
+  overflow: hidden;
 }
 
 /* The Modal (background) */
 #lightbox-modal {
   display: none; /* Hidden by default */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: fixed; /* Stay in place */
   z-index: 2147483647; /* Set to max value as lightbox should always sit on top */
-  padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: #000000e6; /* Black w/ opacity */
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  &.lightbox-open {
+    display: flex;
+  }
 
   &:hover {
     cursor: pointer;
@@ -56,32 +64,17 @@
 
 /* Modal Content (Image) */
 #lightbox-img {
-  margin: auto;
-  display: block;
   max-width: 80%;
+  max-height: 80vh;
+  object-fit: contain;
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
 #lightbox-caption {
-  margin: auto;
-  display: block;
   width: 80%;
   text-align: center;
   color: #ccc;
   padding: 10px 0;
-  height: 150px;
-}
-
-/* Add Animation - Zoom in the Modal */
-#lightbox-img,
-#lightbox-caption {
-  animation-name: lightbox-zoom;
-  animation-duration: 0.6s;
-}
-
-@keyframes lightbox-zoom {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
 }
 
 /* The Close Button */

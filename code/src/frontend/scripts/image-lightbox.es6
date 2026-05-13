@@ -2,7 +2,8 @@ let focusElement = null;
 
 const closeModal = () => {
   const modal = document.getElementById("lightbox-modal");
-  modal.style.display = "none";
+  modal.classList.remove("lightbox-open");
+  document.body.classList.remove("lightbox-open");
   focusElement.focus();
 };
 
@@ -12,7 +13,7 @@ const clickCloseHandler = () => {
 
 const keyboardHandler = (event) => {
   const modal = document.getElementById("lightbox-modal");
-  if (modal.style.display === "block") {
+  if (modal.classList.contains("lightbox-open")) {
     if (event.key === "Escape") {
       closeModal();
       return;
@@ -61,7 +62,8 @@ const openModal = (event) => {
   } else {
     modal.children["lightbox-caption"].textContent = "";
   }
-  modal.style.display = "block";
+  modal.classList.add("lightbox-open");
+  document.body.classList.add("lightbox-open");
   modal.focus();
   document.addEventListener("keydown", keyboardHandler);
   modal.addEventListener("click", clickCloseHandler, { once: true });
@@ -73,7 +75,7 @@ const clickOpenHandler = (event) => {
 
 const keyboardOpenHandler = (event) => {
   const modal = document.getElementById("lightbox-modal");
-  if (modal.style.display !== "block" && event.key === "Enter") {
+  if (!modal.classList.contains("lightbox-open") && event.key === "Enter") {
     openModal(event);
   }
 };
