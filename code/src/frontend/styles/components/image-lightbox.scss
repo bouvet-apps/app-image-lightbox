@@ -50,8 +50,6 @@ body.lightbox-open {
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: #000000e6; /* Black w/ opacity */
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
 
   &.lightbox-open {
     display: flex;
@@ -75,6 +73,25 @@ body.lightbox-open {
   text-align: center;
   color: #ccc;
   padding: 10px 0;
+}
+
+/* Add Animation - Zoom in the Modal */
+#lightbox-img,
+#lightbox-caption {
+  animation-name: lightbox-zoom;
+  animation-duration: 0.2s;
+}
+
+@keyframes lightbox-zoom {
+  from { 
+    transform: scale(0); 
+    opacity: 0; 
+  }
+  
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* The Close Button */
