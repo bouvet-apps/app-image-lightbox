@@ -2,7 +2,8 @@ let focusElement = null;
 
 const closeModal = () => {
   const modal = document.getElementById("lightbox-modal");
-  modal.style.display = "none";
+  modal.classList.remove("lightbox-open");
+  document.body.classList.remove("lightbox-open");
   focusElement.focus();
 };
 
@@ -12,7 +13,7 @@ const clickCloseHandler = () => {
 
 const keyboardHandler = (event) => {
   const modal = document.getElementById("lightbox-modal");
-  if (modal.style.display === "block") {
+  if (modal.classList.contains("lightbox-open")) {
     if (event.key === "Escape") {
       closeModal();
       return;
@@ -52,16 +53,19 @@ const openModal = (event) => {
     properTarget = event.target.parentNode;
   }
   const modal = document.getElementById("lightbox-modal");
-  modal.children["lightbox-img"].src = ""; // Remove any lingering previous image for clients on slow connections.
-  modal.children["lightbox-img"].alt = "";
-  modal.children["lightbox-img"].src = properTarget.children[0].dataset.lightboximagesrc;
-  modal.children["lightbox-img"].alt = properTarget.children[0].alt;
+  const lightboxImg = document.getElementById("lightbox-img");
+  const lightboxCaption = document.getElementById("lightbox-caption");
+  lightboxImg.src = ""; // Remove any lingering previous image for clients on slow connections.
+  lightboxImg.alt = "";
+  lightboxImg.src = properTarget.children[0].dataset.lightboximagesrc;
+  lightboxImg.alt = properTarget.children[0].alt;
   if (properTarget.children[1]?.textContent) {
-    modal.children["lightbox-caption"].textContent = properTarget.children[1].textContent;
+    lightboxCaption.textContent = properTarget.children[1].textContent;
   } else {
-    modal.children["lightbox-caption"].textContent = "";
+    lightboxCaption.textContent = "";
   }
-  modal.style.display = "block";
+  modal.classList.add("lightbox-open");
+  document.body.classList.add("lightbox-open");
   modal.focus();
   document.addEventListener("keydown", keyboardHandler);
   modal.addEventListener("click", clickCloseHandler, { once: true });
@@ -73,7 +77,7 @@ const clickOpenHandler = (event) => {
 
 const keyboardOpenHandler = (event) => {
   const modal = document.getElementById("lightbox-modal");
-  if (modal.style.display !== "block" && event.key === "Enter") {
+  if (!modal.classList.contains("lightbox-open") && event.key === "Enter") {
     openModal(event);
   }
 };
