@@ -1,15 +1,10 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'com.enonic.xp.app' version '3.6.1'
+    id 'com.enonic.xp.app'
     id "com.github.node-gradle.node" version "7.1.0"
     id 'org.ajoberstar.grgit' version '4.1.1'
     id "com.github.ben-manes.versions" version '0.53.0'
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
 }
 
 publishing {
@@ -24,27 +19,8 @@ publishing {
     }
 }
 
-app {
-    name = project.ext.appName
-    displayName = project.ext.displayName
-    vendorName = project.ext.vendorName
-    vendorUrl = project.ext.vendorUrl
-    systemVersion = "${xpVersion}"
-    keepArchiveFileName = true
-
-    rawDevSourcePaths = ["/enonic-xp/devpath", "/enonic-xp/devpathbuild"]
-}
-
 ext {
     deployDir = "../deploy/"
-}
-
-sourceSets {
-    main {
-        resources {
-            srcDir 'site'
-        }
-    }
 }
 
 // ##
@@ -170,14 +146,14 @@ task enonicVersion {
 }
 
 dependencies {
-    implementation "com.enonic.xp:core-api:${xpVersion}"
-    implementation "com.enonic.xp:portal-api:${xpVersion}"
-    include "com.enonic.xp:lib-content:${xpVersion}"
-    include "com.enonic.xp:lib-context:${xpVersion}"
-    include "com.enonic.xp:lib-i18n:${xpVersion}"
-    include "com.enonic.xp:lib-portal:${xpVersion}"
+    implementation xplibs.api.core
+    implementation xplibs.api.portal
+    include xplibs.content
+    include xplibs.context
+    include xplibs.i18n
+    include xplibs.portal
     testImplementation "com.enonic.xp:testing:${xpVersion}"
-    include "com.enonic.lib:lib-cache:2.2.1"
+    include "com.enonic.lib:lib-cache:3.0.0"
 }
 
 repositories {
@@ -192,9 +168,4 @@ node {
     version = '16.20.2'
     npmVersion = '8.19.4'
     download = true
-}
-
-wrapper {
-    gradleVersion = '8.11.1'
-    distributionType = Wrapper.DistributionType.BIN
 }
