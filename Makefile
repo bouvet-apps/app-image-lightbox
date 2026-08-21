@@ -7,19 +7,22 @@ CODE_DIR := code
 FRONTEND_DIR := $(CODE_DIR)/src/frontend
 APPLICATION_DIR := $(CODE_DIR)/src/main
 
-APP_NAME := $(shell cd $(CODE_DIR) && ./gradlew appName -q)
-APP_VERSION := $(shell cd $(CODE_DIR) && ./gradlew appVersion -q)
-GIT_SHA := $(shell git rev-parse --short=7 HEAD)
+# Read straight from gradle.properties: invoking Gradle here runs at parse time on
+# every make call, and a cold Gradle prints to stdout, corrupting these values and
+# breaking Makefile parsing ("missing separator"). APP_NAME mirrors the gradle
+# appName task: projectName with all non-letters stripped.
+APP_NAME := $(shell grep '^projectName' $(CODE_DIR)/gradle.properties | cut -d= -f2 | tr -cd '[:alpha:]')
+PROJECT_NAME := $(shell grep '^projectName' $(CODE_DIR)/gradle.properties | cut -d= -f2 | tr -d ' ')
 
 SANDBOX_DIR := ~/.enonic/sandboxes/$(APP_NAME) # Replace with another sandbox if you like
-SANDBOX_VERSION := $(shell cd $(CODE_DIR) && ./gradlew enonicVersion -q)
+SANDBOX_VERSION := $(shell grep '^xpVersion' $(CODE_DIR)/gradle.properties | cut -d= -f2 | tr -d ' ')
 
 GIT_HOOKS := .git/hooks
 GIT_HOOKS_DIR := scripts/hooks
 GIT_HOOKS_SOURCES := $(shell find $(GIT_HOOKS_DIR))
 
 DIST_DIR := $(CODE_DIR)/build/libs
-PACKAGE_TARGET := $(DIST_DIR)/$(APP_NAME)-$(APP_VERSION).$(GIT_SHA).jar
+PACKAGE_TARGET := $(DIST_DIR)/$(PROJECT_NAME).jar
 
 # List of test files
 FRONTEND_TESTS :=

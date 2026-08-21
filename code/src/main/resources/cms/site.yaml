@@ -1,0 +1,4 @@
+kind: "Site"
+processors:
+  - name: "image-lightbox"
+    order: 10
