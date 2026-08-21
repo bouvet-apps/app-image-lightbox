@@ -90,7 +90,7 @@ const createUrl = (key, scale, filter, format, quality) => urlCache.get(`${key}$
     quality: scaledQuality
   });
 
-  const urlMatch = url.match(/_\/image\/.*/i);
+  const urlMatch = url.match(/_\/(?:media:)?image\/.*/i);
   return urlMatch ? urlMatch[0] : url;
 });
 exports.createUrl = createUrl;

@@ -7,11 +7,15 @@ CODE_DIR := code
 FRONTEND_DIR := $(CODE_DIR)/src/frontend
 APPLICATION_DIR := $(CODE_DIR)/src/main
 
-APP_NAME := $(shell cd $(CODE_DIR) && ./gradlew appName -q)
+# Read straight from gradle.properties: invoking Gradle here runs at parse time on
+# every make call, and a cold Gradle prints to stdout, corrupting these values and
+# breaking Makefile parsing ("missing separator"). APP_NAME mirrors the gradle
+# appName task: projectName with all non-letters stripped.
+APP_NAME := $(shell grep '^projectName' $(CODE_DIR)/gradle.properties | cut -d= -f2 | tr -cd '[:alpha:]')
 PROJECT_NAME := $(shell grep '^projectName' $(CODE_DIR)/gradle.properties | cut -d= -f2 | tr -d ' ')
 
 SANDBOX_DIR := ~/.enonic/sandboxes/$(APP_NAME) # Replace with another sandbox if you like
-SANDBOX_VERSION := $(shell cd $(CODE_DIR) && ./gradlew enonicVersion -q)
+SANDBOX_VERSION := $(shell grep '^xpVersion' $(CODE_DIR)/gradle.properties | cut -d= -f2 | tr -d ' ')
 
 GIT_HOOKS := .git/hooks
 GIT_HOOKS_DIR := scripts/hooks
