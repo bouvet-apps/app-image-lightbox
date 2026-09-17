@@ -24,7 +24,8 @@ exports.responseProcessor = function (req, res) {
   // Define our regular expressions
   const figuresRegex = /<figure\s+[^>]*class="[^"]*editor-image-lightbox[^"]*"[^>]*>[\s\S]*?<\/figure>/g;
   const imageUrlRegex = /(src=")(.*?)(")/;
-  const imageIdRegex = /(\/_\/image\/)(.*?)(:)/;
+  // XP 7 serves images from /_/image/<id>:<hash>/, XP 8 from /_/media:image/<project>/<id>:<hash>/
+  const imageIdRegex = /\/_\/(?:media:)?image\/(?:[^/]+\/)?([^/:]+):/;
 
   // Find all figures with the editor-image-lightbox-class and put them in an array
   const figures = res.body.match(figuresRegex);
@@ -37,19 +38,29 @@ exports.responseProcessor = function (req, res) {
     */
     // Generate high-res images for the modal to use
     const lightboxFigures = figures
-      .map((figure) => ({
-        figure: figure,
-        url: figure.match(imageUrlRegex)[2],
-        id: figure.match(imageIdRegex)[2],
-        image: imageLib.create({
-          key: figure.match(imageIdRegex)[2],
-          scale: "width(2048)", // TODO: Consider allowing adjusting these parameters in app config
-          filter: "",
-          format: "jpg",
-          quality: "70",
-          responsive: true
-        })
-      }));
+      .map((figure) => {
+        const urlMatch = figure.match(imageUrlRegex);
+        const idMatch = figure.match(imageIdRegex);
+
+        if (!urlMatch || !idMatch) {
+          return null; // Not a recognised image URL; leave this figure untouched
+        }
+
+        return {
+          figure: figure,
+          url: urlMatch[2],
+          id: idMatch[1],
+          image: imageLib.create({
+            key: idMatch[1],
+            scale: "width(2048)", // TODO: Consider allowing adjusting these parameters in app config
+            filter: "",
+            format: "jpg",
+            quality: "70",
+            responsive: true
+          })
+        };
+      })
+      .filter((figure) => figure !== null);
 
     // Loop through all figures and modify the page HTML so the modal can use a high-res image instead of the thumbnail
     lightboxFigures.forEach((figure) => {

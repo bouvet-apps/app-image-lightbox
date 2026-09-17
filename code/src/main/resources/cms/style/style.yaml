@@ -1,0 +1,9 @@
+kind: "Style"
+styles:
+  - name: "editor-image-lightbox"
+    type: "Image"
+    label:
+      text: "Bildelysboks"
+      i18n: "style.displayname"
+    editor:
+      css: ""
