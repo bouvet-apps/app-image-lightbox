@@ -56,17 +56,23 @@ exports.responseProcessor = function (req, res) {
       /* After modification, the HTML should look something like this:
         <figure class="captioned editor-align-center editor-image-lightbox" style="margin: auto; width: 60%;"><img alt="Some alt text" src="_/image/[content-id:attachment-id]/width-768/filename.jpg" tabindex="0" data-lightboximagesrc="_/image/[content-id:attachment-id]/width-2048/filename.jpg?quality=70" style="width:100%">
           <figcaption>The caption</figcaption>
+          <svg class="lightbox-fullscreen-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M200-200v-240h80v160h160v80H200Zm480-320v-160H520v-80h240v240h-80Z"/></svg>
         </figure>
       */
-      const figureRegex = new RegExp(`src="${figure.url}"`);
-      res.body = res.body.replace(figureRegex, `src="${figure.url}" tabindex="0" data-lightboximagesrc="${figure.image.src}"`);
+      const svgIcon = "<svg class=\"lightbox-fullscreen-icon\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 -960 960 960\"><path d=\"M200-200v-240h80v160h160v80H200Zm480-320v-160H520v-80h240v240h-80Z\"/></svg>";
+      const modifiedFigure = figure.figure
+        .replace(`src="${figure.url}"`, `src="${figure.url}" tabindex="0" data-lightboximagesrc="${figure.image.src}"`)
+        .replace("</figure>", `${svgIcon}</figure>`);
+      res.body = res.body.replace(figure.figure, modifiedFigure);
     });
 
     // Define the modal HTML
     const modal = `<div tabindex="-1" id="lightbox-modal" role="dialog" aria-modal="true" aria-labelledby="lightbox-caption" data-translations='{"fullscreenImage":"${i18nLib.localize({ key: "fullscreen-image" })}"}'>
       <button id="close-lightbox-modal" title="${i18nLib.localize({ key: "close-dialog" }) || "Steng dialogboksen"}"><span aria-hidden="true">&times;</span></button>
-      <img id="lightbox-img">
-      <div id="lightbox-caption"></div>
+      <div id="lightbox-content">
+        <img id="lightbox-img">
+        <div id="lightbox-caption"></div>
+      </div>
     </div>`;
     res.body = res.body.replace(/<\/body>/, `${modal}</body>`); // We inject the modal at the bottom of our page
 

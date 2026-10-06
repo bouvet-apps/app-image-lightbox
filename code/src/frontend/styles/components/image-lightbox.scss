@@ -4,44 +4,43 @@
   cursor: pointer;
   transition: 0.3s;
   position: relative;
-
-  &::after {
-    content: "\02194";
-    transform: rotate(135deg);
-    font-size: 15px;
-    color: #f1f1f1;
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    background-color: #000000e6; /* Black w/ opacity */
-    border-radius: 50%;
-    transition: 0.3s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: normal;
-  }
+  -webkit-tap-highlight-color: transparent;
 
   &:hover,
   &:focus-within, /* needed as the focus is on the img tag inside the figure with class name "editor-image-lightbox" */
   &:focus {
     opacity: 0.7;
-
-    &::after {
-      transform-origin: center;
-      transform: scale(1.2) rotate(135deg);
-    }
   }
+
+  .lightbox-fullscreen-icon {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #000000e6; /* Black w/ opacity */
+    border-radius: 50%;
+    color: #e3e3e3;
+    fill: currentcolor;
+    transition: 0.3s;
+    pointer-events: none;
+  }
+}
+
+body.lightbox-open {
+  overflow: hidden;
 }
 
 /* The Modal (background) */
 #lightbox-modal {
   display: none; /* Hidden by default */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: fixed; /* Stay in place */
   z-index: 2147483647; /* Set to max value as lightbox should always sit on top */
-  padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -49,39 +48,59 @@
   overflow: auto; /* Enable scroll if needed */
   background-color: #000000e6; /* Black w/ opacity */
 
+  &.lightbox-open {
+    display: flex;
+  }
+
   &:hover {
     cursor: pointer;
   }
 }
 
+#lightbox-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-height: 90vh;
+  overflow: auto;
+}
+
 /* Modal Content (Image) */
 #lightbox-img {
-  margin: auto;
-  display: block;
-  max-width: 80%;
+  width: 100%;
+  max-width: 80vw;
+  max-height: 80vh;
+  object-fit: contain;
 }
 
 /* Caption of Modal Image (Image Text) - Same Width as the Image */
 #lightbox-caption {
-  margin: auto;
-  display: block;
-  width: 80%;
   text-align: center;
   color: #ccc;
-  padding: 10px 0;
-  height: 150px;
+  padding: 10px 1rem;
+  box-sizing: border-box;
+  max-width: 80vw;
+  max-height: 20vh;
 }
 
 /* Add Animation - Zoom in the Modal */
 #lightbox-img,
 #lightbox-caption {
   animation-name: lightbox-zoom;
-  animation-duration: 0.6s;
+  animation-duration: 0.15s;
 }
 
 @keyframes lightbox-zoom {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
+  from { 
+    transform: scale(0); 
+    opacity: 0; 
+  }
+  
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* The Close Button */
@@ -110,13 +129,10 @@
   }
 }
 
-/* 100% Image Width on Smaller Screens */
+/* 95% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px) {
-  #lightbox-img {
-    max-width: 100%;
-  }
-
-  #lightbox-caption {
+  #lightbox-img, #lightbox-caption {
     width: 100%;
+    max-width: 95vw;
   }
 }
