@@ -1,7 +1,7 @@
 # Image lightbox App for Enonic XP
 
 ## Installing the app
-Simply install the app from [Enonic Market](https://market.enonic.com) and add it to your site. There is no configuration needed.
+Simply install the app from [Enonic Market](https://market.enonic.com/vendors/bouvet/image-lightbox) and add it to your site. There is no configuration needed.
 
 If you are using you own Content-Security-Policy (CSP), be aware that if you do not have `'unsafe-inline'` in `style-src`,
 this app might not work as expected out of the box, because styling from Enonic will not be allowed and you should probably add code to handle this in your own app.
