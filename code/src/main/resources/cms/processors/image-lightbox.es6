@@ -1,6 +1,8 @@
 const portalLib = require("/lib/xp/portal");
-const imageLib = require("/lib/image");
 const i18nLib = require("/lib/xp/i18n");
+
+const LIGHTBOX_IMAGE_WIDTH = 1024;
+const LIGHTBOX_IMAGE_QUALITY = 70;
 
 exports.responseProcessor = function (req, res) {
   if (req.mode !== "live" && req.mode !== "preview") {
@@ -32,7 +34,7 @@ exports.responseProcessor = function (req, res) {
 
   if (figures) { // Only proceed if there are image lightboxes on the page
     /* Example figure HTML before we modify it:
-      <figure class="captioned editor-align-center" style="margin: auto; width: 60%;"><img alt="Some alt text" src="_/image/[content-id:attachment-id]/width-768/filename.jpg" style="width:100%">
+      <figure class="captioned editor-align-center" style="margin: auto; width: 60%;"><img alt="Some alt text" src="/_/media:image/project/[content-id:attachment-id]/width-768/filename.jpg" style="width:100%">
         <figcaption>The caption</figcaption>
       </figure>
     */
@@ -50,13 +52,12 @@ exports.responseProcessor = function (req, res) {
           figure: figure,
           url: urlMatch[2],
           id: idMatch[1],
-          image: imageLib.create({
-            key: idMatch[1],
-            scale: "width(2048)", // TODO: Consider allowing adjusting these parameters in app config
+          imageUrl: portalLib.imageUrl({
+            id: idMatch[1],
+            scale: `width(${LIGHTBOX_IMAGE_WIDTH})`,
             filter: "",
             format: "jpg",
-            quality: "70",
-            responsive: true
+            quality: LIGHTBOX_IMAGE_QUALITY
           })
         };
       })
@@ -65,14 +66,14 @@ exports.responseProcessor = function (req, res) {
     // Loop through all figures and modify the page HTML so the modal can use a high-res image instead of the thumbnail
     lightboxFigures.forEach((figure) => {
       /* After modification, the HTML should look something like this:
-        <figure class="captioned editor-align-center editor-image-lightbox" style="margin: auto; width: 60%;"><img alt="Some alt text" src="_/image/[content-id:attachment-id]/width-768/filename.jpg" tabindex="0" data-lightboximagesrc="_/image/[content-id:attachment-id]/width-2048/filename.jpg?quality=70" style="width:100%">
+        <figure class="captioned editor-align-center editor-image-lightbox" style="margin: auto; width: 60%;"><img alt="Some alt text" src="/_/media:image/project/[content-id:attachment-id]/width-768/filename.jpg" tabindex="0" data-lightboximagesrc="/_/media:image/project/[content-id:attachment-id]/width-1024/filename.jpg?quality=70" style="width:100%">
           <figcaption>The caption</figcaption>
           <svg class="lightbox-fullscreen-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M200-200v-240h80v160h160v80H200Zm480-320v-160H520v-80h240v240h-80Z"/></svg>
         </figure>
       */
       const svgIcon = "<svg class=\"lightbox-fullscreen-icon\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 -960 960 960\"><path d=\"M200-200v-240h80v160h160v80H200Zm480-320v-160H520v-80h240v240h-80Z\"/></svg>";
       const modifiedFigure = figure.figure
-        .replace(`src="${figure.url}"`, `src="${figure.url}" tabindex="0" data-lightboximagesrc="${figure.image.src}"`)
+        .replace(`src="${figure.url}"`, `src="${figure.url}" tabindex="0" data-lightboximagesrc="${figure.imageUrl}"`)
         .replace("</figure>", `${svgIcon}</figure>`);
       res.body = res.body.replace(figure.figure, modifiedFigure);
     });
